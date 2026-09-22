@@ -2,13 +2,12 @@ import os
 import cv2
 from skimage.feature import hog
 from skimage import exposure
-import matplotlib.pyplot as plt
 
 # tennisball_path = r'C:\Users\stu-boock\Documents\hog-image-processing\tennisball'
-# shuttlecock_path = r'C:\Users\stu-boock\Documents\hog-image-processing\tennisball'
+# shuttlecock_path = r'C:\Users\stu-boock\Documents\hog-image-processing\shuttlecock'
 
 tennisball_path = r'C:\Users\zenit\Documents\repositories\hog-image-processing\tennisball'
-shuttlecock_path = r'C:\Users\zenit\Documents\repositories\hog-image-processing\tennisball'
+shuttlecock_path = r'C:\Users\zenit\Documents\repositories\hog-image-processing\shuttlecock'
 
 def sort_images():
     all_images = {'tennisball':[], 'shuttlecock':[]}
@@ -47,23 +46,25 @@ def process_images(images):
 def extract_image_hog(processed_image):
     fd, hog_image = hog(processed_image, pixels_per_cell=(8, 8), cells_per_block=(2, 2), visualize=True)
     hog_image_rescaled = exposure.rescale_intensity(hog_image, in_range=(0, 10))
-    return fd
+    return fd, hog_image_rescaled
 
 def extracting_images(processed_images):
     X = []
     y = []
+    hog_images = []
 
     for label, images_list in processed_images.items():
         for image in images_list:
-            features = extract_image_hog(image)
+            features, hog_image = extract_image_hog(image)
             if features is not None:
+                hog_images.append(hog_image)
                 X.append(features)
                 if label == 'tennisball':
                     y.append(0)
                 elif label == 'shuttlecock':
                     y.append(1)
 
-    return X, y
+    return X, y, hog_images
 
 
 if __name__ == "__main__":
