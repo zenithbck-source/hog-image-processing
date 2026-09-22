@@ -1,5 +1,7 @@
 import os
 import cv2
+from skimage.feature import hog
+from skimage import exposure
 import matplotlib.pyplot as plt
 
 # tennisball_path = r'C:\Users\stu-boock\Documents\hog-image-processing\tennisball'
@@ -21,6 +23,7 @@ def sort_images():
             all_images['shuttlecock'].append(filename)
 
     return all_images
+
 def process_images(images):
     processed_images = {'tennisball':[], 'shuttlecock':[]}
 
@@ -41,12 +44,32 @@ def process_images(images):
 
     return processed_images
 
+def extract_image_hog(processed_image):
+    fd, hog_image = hog(processed_image, pixels_per_cell=(8, 8), cells_per_block=(2, 2), visualize=True)
+    hog_image_rescaled = exposure.rescale_intensity(hog_image, in_range=(0, 10))
+    return fd
+
+def extracting_images(processed_images):
+    X = []
+    y = []
+
+    for label, images_list in processed_images.items():
+        for image in images_list:
+            features = extract_image_hog(image)
+            if features is not None:
+                X.append(features)
+                if label == 'tennisball':
+                    y.append(0)
+                elif label == 'shuttlecock':
+                    y.append(1)
+
+    return X, y
 
 
 if __name__ == "__main__":
     images = sort_images()
     processed_images = process_images(images)
+    X, y = extracting_images(processed_images)
 
-    plt.figure(figsize=(4, 4))
-    plt.imshow(processed_images['tennisball'][0], cmap='gray')
-    plt.show()
+    print(X)
+    print(y)
