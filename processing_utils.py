@@ -2,14 +2,17 @@ import os
 import cv2
 import matplotlib.pyplot as plt
 
+# tennisball_path = r'C:\Users\stu-boock\Documents\hog-image-processing\tennisball'
+# shuttlecock_path = r'C:\Users\stu-boock\Documents\hog-image-processing\tennisball'
+
+tennisball_path = r'C:\Users\zenit\Documents\repositories\hog-image-processing\tennisball'
+shuttlecock_path = r'C:\Users\zenit\Documents\repositories\hog-image-processing\tennisball'
+
 def sort_images():
     all_images = {'tennisball':[], 'shuttlecock':[]}
 
-    tennisball_drive_path = r'C:\Users\stu-boock\Documents\hog-image-processing\tennisball'
-    tennisball_files = os.listdir(tennisball_drive_path)
-
-    shuttlecock_drive_path = r'C:\Users\stu-boock\Documents\hog-image-processing\shuttlecock'
-    shuttlecock_files = os.listdir(shuttlecock_drive_path)
+    tennisball_files = os.listdir(tennisball_path)
+    shuttlecock_files = os.listdir(shuttlecock_path)
 
     for filename in tennisball_files:
         all_images['tennisball'].append(filename)
@@ -23,9 +26,9 @@ def process_images(images):
 
     for label, filenames in images.items():
         if label == 'tennisball':
-            image_dir = r'C:\Users\stu-boock\Documents\hog-image-processing\tennisball'
+            image_dir = tennisball_path
         elif label == 'shuttlecock':
-            image_dir = r'C:\Users\stu-boock\Documents\hog-image-processing\shuttlecock'
+            image_dir = shuttlecock_path
 
         for filename in filenames:
             image_path_full = os.path.join(image_dir, filename)
@@ -47,4 +50,3 @@ if __name__ == "__main__":
     plt.figure(figsize=(4, 4))
     plt.imshow(processed_images['tennisball'][0], cmap='gray')
     plt.show()
-
