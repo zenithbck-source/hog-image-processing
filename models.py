@@ -66,7 +66,7 @@ def SVM_model(X_train, X_test, y_train, y_test):
 
     return y_pred_svm
 
-def show_testing(hog_images, idx_test, y_pred_knn, y_pred_svm, images_per_row=5):
+def show_testing(hog_images, idx_test, y_pred_knn, y_pred_svm, images_per_row=8):
     num_images = len(idx_test)
     num_rows = math.ceil(num_images / images_per_row)
 
